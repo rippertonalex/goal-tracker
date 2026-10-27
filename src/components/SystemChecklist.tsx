@@ -1,6 +1,7 @@
 "use client";
 
 import { System, SystemCompletion } from "@/lib/types";
+import { completionPercent } from "@/lib/progress";
 
 interface SystemChecklistProps {
   systems: System[];
@@ -46,6 +47,7 @@ export default function SystemChecklist({
 
   const completedCount = systems.filter((s) => isCompleted(s.id)).length;
   const totalCount = systems.length;
+  const percent = completionPercent(completedCount, totalCount);
 
   return (
     <div>
@@ -54,8 +56,15 @@ export default function SystemChecklist({
           Systems
         </h3>
         <span className="text-xs text-zinc-500">
-          {completedCount}/{totalCount} completed
+          {completedCount}/{totalCount} completed · {percent}%
         </span>
+      </div>
+
+      <div className="h-1.5 mb-3 rounded-full bg-zinc-800 overflow-hidden">
+        <div
+          className={`h-full rounded-full bg-${goalColor}-500 transition-all duration-300`}
+          style={{ width: `${percent}%` }}
+        />
       </div>
 
       <div className="space-y-2">
